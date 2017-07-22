@@ -1,10 +1,39 @@
-<% if (theme.links.length){ %>
+<% if (theme.links.length) { %>
 <div class="widget">
+
 	<h4><%= __('links') %></h4>
 	<ul class="blogroll list-unstyled">
-	<% for (var i in theme.links){ %>
-		<li><i class="<%- theme.links[i].icon %>"></i><a href="<%- theme.links[i].url %>" title="<%- theme.links[i].intro %>" target="_blank"]);"><%= theme.links[i].title %></a></li>
+	<% for (var i in theme.links) { %>
+		<li>
+			<i class="<%- theme.links[i].icon %>"></i>
+			<a href="<%- theme.links[i].url %>" title="<%- theme.links[i].intro %>" target="_blank"><%= theme.links[i].title %></a>
+		</li>
 	<% } %>
 	</ul>
+
+  <h5>GitHub Repos</h5>
+  <ul id="gh_repos" class="list-unstyled">
+    <li class="loading">Status updating&#8230;</li>
+  </ul>
+  <a href="https://github.com/Andrew-cn" target="_blank">@Andrew-cn</a> on GitHub
+  <script src="<%- config.root %>js/github.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    github.showRepos({
+        user: 'Andrew-cn',
+        count: 0,
+        skip_forks: true,
+        target: '#gh_repos',
+        blacklist: ''
+    });
+  </script>
+
+<h5>Douban Reads</h5>
+<ul id="douban" class="list-unstyled"></ul>
+<a href="https://www.douban.com/people/metaphilosophy/" target="_blank">@metaphilosophy</a> on Douban
+<script src="<%- config.root %>js/dbapi.js" type="text/javascript"></script>
+<script type="text/javascript">
+    dbapi.showBooks();
+</script>
+
 </div>
 <% } %>

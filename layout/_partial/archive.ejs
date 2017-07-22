@@ -22,8 +22,8 @@
    %>
 
 <!-- title -->
-<div class="page-header <% if (theme.inverse){ %>page-header-inverse <% } %>">
-  <h1 class="archive-title<% if (page.tag){ %>-tag<% } else if (page.category){ %>-category<% } %> title <% if (theme.inverse){ %>title-inverse <% } %>"><%= title %></h1>
+<div class="page-header">
+  <h1 class="archive-title<% if (page.tag){ %>-tag<% } else if (page.category){ %>-category<% } %>"><%= title %></h1>
 </div>
 
 <div class="row page">
@@ -34,22 +34,6 @@
 	<div class="col-md-12">
 	  <% } %>
 
-	  <div id="top_search"></div>
-
-      <% if (page.category || page.tag) { %>
-         <!-- display as entry -->
-	     <div class="mypage">
-	       <% page.posts.each(function(item){ %>
-		     <%- partial('post/title', {item: item, index: true}) %>
-		     <%- partial('post/entry', {item: item, index: true}) %>
-	       <% }); %>
-	     </div>
-	     <div>
-	       <center>
-	         <%- partial('index_pagination') %>
-	       </center>
-	     </div>	
-      <% } else { %>
 	  <div class="archive">
 		<% posts.sort('date', -1).each(function(item){ %>
 		<%
@@ -80,7 +64,6 @@
 		<% }); %>
 		</ul>
 		</div>
-        <% } %>
 
 </div> <!-- col-md-9/col-md-12 -->
 
