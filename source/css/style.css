@@ -82,6 +82,18 @@ body {
   border-bottom: 1px solid #ccc;
 }
 
+/*.mypage #toc {*/
+  /*float: right;*/
+  /*background-color: #eee;*/
+  /*font-size: 0.8em;*/
+  /*color: color-link;*/
+  /*margin: 5px;*/
+/*}*/
+
+/*.mypage #toc .toc {*/
+  /*list-style: none;*/
+/*}*/
+
 /* =============================================================================
    navbar
    ========================================================================== */
