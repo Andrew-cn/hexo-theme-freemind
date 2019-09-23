@@ -20,9 +20,9 @@ var dbapi = (function() {
 
     var appendInfos = function (item, total) {
         if(total > item.maxCount) total = item.maxCount;
-        for(var i = 0; i < total; i += 20) {
+        for(var i = 0; i < total; i += 100) {
             $.ajax({
-                url: getURL(item.status, i, 20),
+                url: getURL(item.status, i, 100),
                 dataType: 'jsonp',
                 success: function (data) { $('#book_' + item.status).append(render(data['collections'])); }
             });

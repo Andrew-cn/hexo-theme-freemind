@@ -2,6 +2,8 @@
 <section id="comment">
   <h2 class="title"><%= __('comment') %></h2>
 
+  <script data-isso="http://jhub.name:8000/" src="http://jhub.name:8000/js/embed.min.js"></script>
+  <section id="isso-thread"></section>
   <% if(theme.duoshuo_shortname) { %>
   	 <div class="ds-thread" data-thread-key="<%- page.path %>" data-title="<%- page.title %>" data-url="<%- page.permalink %>"></div>  
   <% } else if(config.disqus_shortname) { %>
