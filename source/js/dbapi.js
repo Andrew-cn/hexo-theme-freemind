@@ -2,60 +2,58 @@ var dbapi = (function() {
     var render = function (infos) {
         var html = '';
         for(var i = 0; i < infos.length; ++i) {
-            var detail = infos[i]["db:subject"];
-            var title = detail["title"]["$t"];
-            var link = detail["link"][1]["@href"];
-//          var image = detail["link"][2]["@href"];
+            var detail = infos[i]['book'];
+            var title = detail['title'];
+            var link = detail['alt'];
+//          var image = detail['image'];
             html += '<i class="fa fa-file-text-o"></i><a href="' + link + '" target="_blank">' + title + '</a>';
         }
         return html;
     };
 
     var getURL = function (status, begin, count) {
-        var url = "https://api.douban.com/people/" + opts.user + "/collection?cat=book&alt=json";
-        url += "&status=" + status + "&start-index=" + begin + "&max-results=" + count;
-        if (opts.api.length > 0) url += "&apikey=" + opts.api;
+        var url = 'https://api.douban.com/v2/book/user/' + opts.user + '/collections';
+        url += '?status=' + status + '&start=' + begin + '&count=' + count;
+        if (opts.api.length > 0) url += '&apikey=' + opts.api;
         return url;
     };
 
     var appendInfos = function (item, total) {
         if(total > item.maxCount) total = item.maxCount;
-        for(var i = 1; i <= total; i += 50) {
+        for(var i = 0; i < total; i += 20) {
             $.ajax({
-                url: getURL(item.status, i, 50),
-                dataType: "jsonp",
-                success: function (data) { $("#book_" + item.status).append(render(data.entry)); }
+                url: getURL(item.status, i, 20),
+                dataType: 'jsonp',
+                success: function (data) { $('#book_' + item.status).append(render(data['collections'])); }
             });
         }
     };
 
-    var defaults = {
-        target: "douban",
-        user: "metaphilosophy",
-        api: "0a071301c64c69681e15390552e53c38",
-        count: [{status: "reading", maxCount: 20}, {status: "read", maxCount: 200}, {status: "wish", maxCount: 200}],
-        readingTitle: "What am I reading?",
-        readTitle: "What did I read?",
-        wishTitle: "What do I wish to read?"
+    var opts = {
+        target: 'douban',
+        user: 'metaphilosophy',
+        api: '0df993c66c0c636e29ecbb5344252a4a',
+        count: [{status: 'reading', maxCount: 20}, {status: 'read', maxCount: 200}, {status: 'wish', maxCount: 200}],
+        readingTitle: 'What am I reading?',
+        readTitle: 'What did I read?',
+        wishTitle: 'What do I wish to read?'
     };
-
-    var opts = defaults;
 
     return {
         showBooks: function() {
-            var h = $("#" + opts.target);
-            if(h.length === 0) h = $("<ul/>").attr("id", opts.target).prependTo($("body"));
+            var h = $('#' + opts.target);
+            if(h.length === 0) h = $('<ul/>').attr('id', opts.target).prependTo($('body'));
             for(var i = 0; i < opts.count.length; ++i) {
                 var item = opts.count[i];
-                if($("#book_" + item.status).length === 0) {
-                    $("<li/>").text(opts[item.status + "Title"]).prepend($('<i/>').attr("class", "fa fa-star")).appendTo(h);
-                    $("<li/>").attr("id", "book_" + item.status).addClass("douban-list").appendTo(h);
+                if($('#book_' + item.status).length === 0) {
+                    $('<li/>').text(opts[item.status + 'Title']).prepend($('<i/>').attr('class', 'fa fa-star')).appendTo(h);
+                    $('<li/>').attr('id', 'book_' + item.status).addClass('douban-list').appendTo(h);
                 }
                 $.ajax({
-                    url: getURL(item.status, 1, 0),
-                    dataType: "jsonp",
-                    error: function (err) { $("#book_" + this.item.status).addClass('error').text("Error loading feed"); },
-                    success: function (data) { appendInfos(this.item, data["opensearch:totalResults"]["$t"]); },
+                    url: getURL(item.status, 0, 1),
+                    dataType: 'jsonp',
+                    error: function (err) { $('#book_' + this.item.status).addClass('error').text('Error loading feed'); },
+                    success: function (data) { appendInfos(this.item, data['total']); },
                     item: item
                 });
             }
